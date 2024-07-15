@@ -35,7 +35,22 @@ float ULTRASONIC::microsec_to_inch(long microsec){
     return microsec*0.0135/2;
 }
 
-bool ULTRASONIC::object_detected(float distance_to_obj , unit unit){
+bool ULTRASONIC::object_detected(float distance_to_obj , Unit unit){
     float distance = get_distance(unit);
     return distance <= distance_to_obj;
+}
+
+void print_distance(Unit unit){
+
+    float distance = get_distance(unit);
+
+    if (unit==cm){
+        Serial.print("Distance: ");
+        Serial.print(distance);
+        Serial.println(" cm");
+    }else{
+        Serial.print("Distance: ");
+        Serial.print(distance);
+        Serial.println(" inch");
+    }
 }
