@@ -14,6 +14,7 @@ public:
 
     ULTRASONIC(int triggerPin , int echoPin);
     float get_distance(unit unit::cm);
+    bool object_detected(float distance_to_obj, unit unit = cm);
 
 private:
 

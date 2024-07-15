@@ -25,6 +25,8 @@ float ULTRASONIC::get_distance(unit unit){
         return microsec_to_inch(duration);
     }
 }
+
+
 float ULTRASONIC::microsec_to_com(long microsec){
     return microsec*0.0343/2;
 }
@@ -33,3 +35,7 @@ float ULTRASONIC::microsec_to_inch(long microsec){
     return microsec*0.0135/2;
 }
 
+bool ULTRASONIC::object_detected(float distance_to_obj , unit unit){
+    float distance = get_distance(unit);
+    return distance <= distance_to_obj;
+}

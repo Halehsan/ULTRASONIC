@@ -21,6 +21,27 @@ void loop(){
     Serial.print(distance_inch);
     Serial.println(" inch");
 
+    float thresholod_cm = ...;
+    float thresholod_inch = ...;
+
+
+    bool detected_cm = sensor.objected(thresholod_cm,cm);
+    bool detected_inch = sensor.objected(thresholod_inch,inch);
+
+    if (detected_cm) {
+        Serial.println("Object detected within ... cm");
+    } else {
+        Serial.println("No object detected within ... cm");
+    }
+
+
+    if (detected_inch) {
+        Serial.println("Object detected within ... inch");
+    } else {
+        Serial.println("No object detected within ... inch");
+    }
+
+
     delay(1000);
 }
 
