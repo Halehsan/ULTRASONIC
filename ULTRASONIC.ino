@@ -4,6 +4,8 @@
 
 
 ULTRASONIC sensor(,);
+const int counter = 5;
+
 
 void setup(){
     Serial.begin(9600);
@@ -11,19 +13,38 @@ void setup(){
 
 void loop(){
 
-    sensor.print_distance(cm);
-    sensor.print_distance(inch);
+    float distance_cm = ultrasonic.get_distance(CM);
+    float smoothed_distance_cm = ultrasonic.get_smoothed_distance(CM);
+    
+    float distance_inch = ultrasonic.get_distance(INCH);
+    float smoothed_distance_inch = ultrasonic.get_smoothed_distance(INCH);
 
-
-    float dist_cm = sensor.get_distance(cm);
-    Serial.print("Distance: ");
+    Serial.print(" Distance: ");
     Serial.print(distance_cm);
-    Serial.println(" cm");
+    Serial.print(" cm - Smoothed Distance: ");
+    Serial.print(smoothed_distance_cm);
+    Serial.print(" cm\n");
 
-    float dist_inch = sensor.get_distance(inch);
-    Serial.print("Distance: ");
+    Serial.print(" Distance: ");
     Serial.print(distance_inch);
+    Serial.print(" inch - Smoothed Distance: ");
+    Serial.print(smoothed_distance_inch);
     Serial.println(" inch");
+
+
+    // sensor.print_distance(cm);
+    // sensor.print_distance(inch);
+
+
+    // float dist_cm = sensor.get_distance(cm);
+    // Serial.print("Distance: ");
+    // Serial.print(distance_cm);
+    // Serial.println(" cm");
+
+    // float dist_inch = sensor.get_distance(inch);
+    // Serial.print("Distance: ");
+    // Serial.print(distance_inch);
+    // Serial.println(" inch");
 
     float thresholod_cm = ...;
     float thresholod_inch = ...;

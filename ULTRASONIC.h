@@ -16,6 +16,8 @@ public:
     float get_distance(unit unit::cm);
     bool object_detected(float distance_to_obj, unit unit = cm);
     void print_distance(unit unit = cm);
+    float get_smoothed_distance(unit unit = cm);
+
 
 private:
 
@@ -23,6 +25,14 @@ private:
     float microsec_to_inch(long microsec);
     const int triggerPin;
     const int echoPin;
+    static const int counter = 5;
+    float readings[counter];
+    int index = 0;
+    float total = 0;
+    float average = 0;
+
+    float calculate_standard_deviation(float data[], int size);
+
 
 };
 

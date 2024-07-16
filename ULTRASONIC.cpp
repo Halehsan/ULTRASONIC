@@ -54,3 +54,49 @@ void print_distance(Unit unit){
         Serial.println(" inch");
     }
 }
+
+
+float ULTRASONIC::get_smoothed_distance(Unit unit) {
+
+    float newDistance = get_distance(unit);
+
+    readings[index] = newDistance;
+    index = (index + 1) % counter;
+
+    float total = 0;
+    for (int i = 0; i < counter; i++) {
+        total += readings[i];
+    }
+
+    float avg = total / counter;
+
+    float stddev = calculate_standard_deviation(readings, counter);
+
+    float smoothedTotal = 0;
+    int count = 0;
+    for (int i = 0; i < counter; i++) {
+        if (fabs(readings[i] - avg) <= stddev) {
+            smoothedTotal += readings[i];
+            count++;
+        }
+    }
+    if (count > 0) {
+        return smoothedTotal / count;
+    } else {
+        return avg;
+    }
+}
+
+float ULTRASONIC::calculate_standard_deviation(float data[], int size) {
+
+    float mean = 0.0, sum_deviation = 0.0;
+
+    for (int i = 0; i < size; ++i) {
+        mean += data[i];
+    }
+    mean = mean / size;
+    for (int i = 0; i < size; ++i) {
+        sum_deviation += pow((data[i] - mean), 2);
+    }
+    return sqrt(sum_deviation / size);
+}
