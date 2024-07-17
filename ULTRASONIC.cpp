@@ -1,56 +1,54 @@
-#include <ULTRASONIC.h>
+
+#include "ULTRASONIC.h"
 #include <Arduino.h>
+// #include <algorithm> // For std::sort
 
 
 ULTRASONIC::ULTRASONIC(int triggerPin , int echoPin){
     this->triggerPin = triggerPin;
     this->echoPin = echoPin;
-    pinMode = (triggerPin, OUTPUT);
-    pinMode = (echoPin, OUTPUT);   
-   
-} 
+    pinMode(triggerPin, OUTPUT);
+    pinMode(echoPin, INPUT);   
+}
 
-float ULTRASONIC::get_distance(unit unit){
-    digitalWrite(triggerPin,LOW);
+
+float ULTRASONIC::get_distance(Unit unit) {
+    digitalWrite(triggerPin, LOW);
     delayMicroseconds(2);
-    digitalWrite(triggerPin,HIGH);
+    digitalWrite(triggerPin, HIGH);
     delayMicroseconds(10);
-    digitalWrite(triggerPin,LOW);
+    digitalWrite(triggerPin, LOW);
 
-    duration = pulseIn(echoPin, HIGH);
+    long duration = pulseIn(echoPin, HIGH);
 
-    if (unit == cm){
-
+    if (unit == cm) {
         return microsec_to_cm(duration);
-    }else{
-
+    } else {
         return microsec_to_inch(duration);
     }
 }
 
-
-float ULTRASONIC::microsec_to_com(long microsec){
-    return microsec*0.0343/2;
+float ULTRASONIC::microsec_to_cm(long microsec) {
+    return microsec * 0.0343 / 2;
 }
 
-float ULTRASONIC::microsec_to_inch(long microsec){
-    return microsec*0.0135/2;
+float ULTRASONIC::microsec_to_inch(long microsec) {
+    return microsec * 0.0135 / 2;
 }
 
-bool ULTRASONIC::object_detected(float distance_to_obj , Unit unit){
+bool ULTRASONIC::object_detected(float distance_to_obj, Unit unit) {
     float distance = get_distance(unit);
     return distance <= distance_to_obj;
 }
 
-void print_distance(Unit unit){
-
+void ULTRASONIC::print_distance(Unit unit) {
     float distance = get_distance(unit);
 
-    if (unit==cm){
+    if (unit == cm) {
         Serial.print("Distance: ");
         Serial.print(distance);
         Serial.println(" cm");
-    }else{
+    } else {
         Serial.print("Distance: ");
         Serial.print(distance);
         Serial.println(" inch");
@@ -58,8 +56,8 @@ void print_distance(Unit unit){
 }
 
 
-float ULTRASONIC::get_smoothed_distance(Unit unit) {
 
+float ULTRASONIC::get_smoothed_distance(Unit unit) {
     float newDistance = get_distance(unit);
 
     readings[index] = newDistance;
@@ -90,13 +88,13 @@ float ULTRASONIC::get_smoothed_distance(Unit unit) {
 }
 
 float ULTRASONIC::calculate_standard_deviation(float data[], int size) {
-
     float mean = 0.0, sum_deviation = 0.0;
 
     for (int i = 0; i < size; ++i) {
         mean += data[i];
     }
     mean = mean / size;
+
     for (int i = 0; i < size; ++i) {
         sum_deviation += pow((data[i] - mean), 2);
     }

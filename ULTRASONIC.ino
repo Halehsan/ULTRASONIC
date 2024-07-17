@@ -1,9 +1,9 @@
 #include <Arduino.h>
-#include <ULTRASONIC.h>
+#include "ULTRASONIC.h"
 
 
 
-ULTRASONIC sensor(,);
+ULTRASONIC sensor(12,13);
 const int counter = 5;
 
 
@@ -16,7 +16,7 @@ void loop(){
     float distance_cm = sensor.get_distance(cm);
     float smoothed_distance_cm = sensor.get_smoothed_distance(cm);
     
-    float distance_inch = sensor.get_distance(INCH);
+    float distance_inch = sensor.get_distance(inch);
     float smoothed_distance_inch = sensor.get_smoothed_distance(inch);
 
     Serial.print(" Distance: ");
@@ -46,24 +46,24 @@ void loop(){
     // Serial.print(distance_inch);
     // Serial.println(" inch");
 
-    float thresholod_cm = ...;
-    float thresholod_inch = ...;
+    float thresholod_cm = 10.0;
+    float thresholod_inch = 4.0;
 
 
-    bool detected_cm = sensor.objected(thresholod_cm,cm);
-    bool detected_inch = sensor.objected(thresholod_inch,inch);
+    bool detected_cm = sensor.object_detected(thresholod_cm,cm);
+    bool detected_inch = sensor.object_detected(thresholod_inch,inch);
 
     if (detected_cm) {
-        Serial.println("Object detected within ... cm");
+        Serial.println("Object detected within 10 cm");
     } else {
-        Serial.println("No object detected within ... cm");
+        Serial.println("No object detected within 10 cm");
     }
 
 
     if (detected_inch) {
-        Serial.println("Object detected within ... inch");
+        Serial.println("Object detected within 4 inch");
     } else {
-        Serial.println("No object detected within ... inch");
+        Serial.println("No object detected within 4 inch");
     }
 
 
