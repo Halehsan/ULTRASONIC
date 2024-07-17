@@ -7,7 +7,7 @@ ULTRASONIC::ULTRASONIC(int triggerPin , int echoPin){
     this->triggerPin = triggerPin;
     this->echoPin = echoPin;
     pinMode(triggerPin, OUTPUT);
-    pinMode(echoPin, OUTPUT);   
+    pinMode(echoPin, INPUT);   
    
 } 
 

@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import serial
 
-ser = serial.Serial('COMA0',9600,timeout=1)        
+ser = serial.Serial('COM3',9600,timeout=1)        
 fig, ax = plt.subplots()
 xs = []
 ys = []
