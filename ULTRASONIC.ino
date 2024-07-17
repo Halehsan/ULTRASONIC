@@ -13,11 +13,11 @@ void setup(){
 
 void loop(){
 
-    float distance_cm = sensor.get_distance(CM);
-    float smoothed_distance_cm = sensor.get_smoothed_distance(CM);
+    float distance_cm = sensor.get_distance(cm);
+    float smoothed_distance_cm = sensor.get_smoothed_distance(cm);
     
     float distance_inch = sensor.get_distance(INCH);
-    float smoothed_distance_inch = sensor.get_smoothed_distance(INCH);
+    float smoothed_distance_inch = sensor.get_smoothed_distance(inch);
 
     Serial.print(" Distance: ");
     Serial.print(distance_cm);
