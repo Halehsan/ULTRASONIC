@@ -13,11 +13,11 @@ void setup(){
 
 void loop(){
 
-    float distance_cm = ultrasonic.get_distance(CM);
-    float smoothed_distance_cm = ultrasonic.get_smoothed_distance(CM);
+    float distance_cm = sensor.get_distance(CM);
+    float smoothed_distance_cm = sensor.get_smoothed_distance(CM);
     
-    float distance_inch = ultrasonic.get_distance(INCH);
-    float smoothed_distance_inch = ultrasonic.get_smoothed_distance(INCH);
+    float distance_inch = sensor.get_distance(INCH);
+    float smoothed_distance_inch = sensor.get_smoothed_distance(INCH);
 
     Serial.print(" Distance: ");
     Serial.print(distance_cm);
