@@ -98,3 +98,27 @@ float ULTRASONIC::get_median(float data[], int size) {
         return sorted[mid];
     }
 }
+
+
+int ULTRASONIC::object_counter(Unit unit){
+
+    float distance = get_smoothed_distance(unit);
+
+    float detection_threshold;
+    if (unit == cm) {
+        detection_threshold = detection_threshold_cm;
+    } else {
+        detection_threshold = detection_threshold_inch;
+    }
+
+    if (distance <= detection_threshold && !having_obj){
+
+        having_obj = true;
+        obj_count++; 
+    }else if(distance > detection_threshold && having_obj){
+        having_obj = false;
+
+    }
+    return obj_count;
+
+}

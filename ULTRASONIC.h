@@ -17,6 +17,7 @@ public:
     bool object_detected(float distance_to_obj, Unit unit = cm);
     void print_distance(Unit unit = cm);
     float get_smoothed_distance(Unit unit = cm);
+    int object_counter(Unit unit = cm);
 
 
 private:
@@ -34,6 +35,12 @@ private:
     // float calculate_standard_deviation(float data[], int size);
     float get_median(float data[], int size);
     void  sort(float data[], int size);
+
+    const float detection_threshold_cm = 10.0;
+    const float detection_threshold_inch = 0.393701*detection_threshold_cm ;
+    bool having_obj = false;
+    int obj_count = 0;
+
 
 
 };

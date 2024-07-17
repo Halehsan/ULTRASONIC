@@ -67,6 +67,15 @@ void loop(){
     }
 
 
+    int obj_count_cm = sensor.object_counter(cm);
+    Serial.print("Number of machines (cm): ");
+    Serial.println(obj_count_cm);
+
+    int obj_count_inch = sensor.object_counter(inch);
+    Serial.print("Number of machines (inch): ");
+    Serial.println(obj_count_inch);
+
     delay(1000);
 }
+
 
