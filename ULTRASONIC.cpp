@@ -1,23 +1,24 @@
-#include <ULTRASONIC.h>
+#include "ULTRASONIC.h"
 #include <Arduino.h>
+
 
 
 ULTRASONIC::ULTRASONIC(int triggerPin , int echoPin){
     this->triggerPin = triggerPin;
     this->echoPin = echoPin;
-    pinMode = (triggerPin, OUTPUT);
-    pinMode = (echoPin, OUTPUT);   
+    pinMode(triggerPin, OUTPUT);
+    pinMode(echoPin, OUTPUT);   
    
 } 
 
-float ULTRASONIC::get_distance(unit unit){
+float ULTRASONIC::get_distance(Unit unit){
     digitalWrite(triggerPin,LOW);
     delayMicroseconds(2);
     digitalWrite(triggerPin,HIGH);
     delayMicroseconds(10);
     digitalWrite(triggerPin,LOW);
 
-    duration = pulseIn(echoPin, HIGH);
+    float duration = pulseIn(echoPin, HIGH);
 
     if (unit == cm){
 
@@ -29,7 +30,7 @@ float ULTRASONIC::get_distance(unit unit){
 }
 
 
-float ULTRASONIC::microsec_to_com(long microsec){
+float ULTRASONIC::microsec_to_cm(long microsec){
     return microsec*0.0343/2;
 }
 
@@ -42,15 +43,14 @@ bool ULTRASONIC::object_detected(float distance_to_obj , Unit unit){
     return distance <= distance_to_obj;
 }
 
-void print_distance(Unit unit){
-
+void ULTRASONIC::print_distance(Unit unit) {
     float distance = get_distance(unit);
 
-    if (unit==cm){
+    if (unit == cm) {
         Serial.print("Distance: ");
         Serial.print(distance);
         Serial.println(" cm");
-    }else{
+    } else {
         Serial.print("Distance: ");
         Serial.print(distance);
         Serial.println(" inch");
@@ -59,46 +59,42 @@ void print_distance(Unit unit){
 
 
 float ULTRASONIC::get_smoothed_distance(Unit unit) {
-
     float newDistance = get_distance(unit);
 
     readings[index] = newDistance;
     index = (index + 1) % counter;
 
-    float total = 0;
-    for (int i = 0; i < counter; i++) {
-        total += readings[i];
-    }
+    return get_median(readings, counter);
+}
 
-    float avg = total / counter;
-
-    float stddev = calculate_standard_deviation(readings, counter);
-
-    float smoothedTotal = 0;
-    int count = 0;
-    for (int i = 0; i < counter; i++) {
-        if (fabs(readings[i] - avg) <= stddev) {
-            smoothedTotal += readings[i];
-            count++;
+void ULTRASONIC::sort(float data[], int size) {
+    for (int i = 0; i < size - 1; i++) {
+        for (int j = 0; j < size - i - 1; j++) {
+            if (data[j] > data[j + 1]) {
+                
+                float temp = data[j];
+                data[j] = data[j + 1];
+                data[j + 1] = temp;
+            }
         }
-    }
-    if (count > 0) {
-        return smoothedTotal / count;
-    } else {
-        return avg;
     }
 }
 
-float ULTRASONIC::calculate_standard_deviation(float data[], int size) {
-
-    float mean = 0.0, sum_deviation = 0.0;
-
-    for (int i = 0; i < size; ++i) {
-        mean += data[i];
+float ULTRASONIC::get_median(float data[], int size) {
+    float sorted[size];
+    
+    for (int i = 0; i < size; i++) {
+        sorted[i] = data[i];
     }
-    mean = mean / size;
-    for (int i = 0; i < size; ++i) {
-        sum_deviation += pow((data[i] - mean), 2);
+
+    sort(sorted, size);
+
+    if (size % 2 == 0) {
+        int mid1 = size / 2 - 1;
+        int mid2 = size / 2;
+        return (sorted[mid1] + sorted[mid2]) / 2.0;
+    } else {
+        int mid = size / 2;
+        return sorted[mid];
     }
-    return sqrt(sum_deviation / size);
 }
