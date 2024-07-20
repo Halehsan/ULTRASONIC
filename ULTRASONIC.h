@@ -22,7 +22,7 @@ public:
 
 private:
 
-    float microsec_to_cm(long microsec);
+    float microsec_to_cm(unsigned long  microsec);
     float microsec_to_inch(long microsec);
     int triggerPin;
     int echoPin;
@@ -32,7 +32,6 @@ private:
     float total = 0;
     float average = 0;
 
-    // float calculate_standard_deviation(float data[], int size);
     float get_median(float data[], int size);
     void  sort(float data[], int size);
 
@@ -40,6 +39,7 @@ private:
     const float detection_threshold_inch = 0.393701*detection_threshold_cm ;
     bool having_obj = false;
     int obj_count = 0;
+    unsigned long timeout = 500;
 
 
 

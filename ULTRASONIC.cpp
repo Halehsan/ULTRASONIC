@@ -18,7 +18,7 @@ float ULTRASONIC::get_distance(Unit unit){
     delayMicroseconds(10);
     digitalWrite(triggerPin,LOW);
 
-    float duration = pulseIn(echoPin, HIGH);
+    unsigned long duration = pulseIn(echoPin, HIGH);
 
     if (unit == cm){
 
@@ -30,8 +30,8 @@ float ULTRASONIC::get_distance(Unit unit){
 }
 
 
-float ULTRASONIC::microsec_to_cm(long microsec){
-    return microsec*0.0343/2;
+float ULTRASONIC::microsec_to_cm(unsigned long microsec){
+    return microsec/58;
 }
 
 float ULTRASONIC::microsec_to_inch(long microsec){
@@ -100,9 +100,8 @@ float ULTRASONIC::get_median(float data[], int size) {
 }
 
 
-int ULTRASONIC::object_counter(Unit unit){
-
-    float distance = get_smoothed_distance(unit);
+int ULTRASONIC::object_counter(Unit unit) {
+    float distance = get_distance(unit);
 
     float detection_threshold;
     if (unit == cm) {
@@ -111,14 +110,24 @@ int ULTRASONIC::object_counter(Unit unit){
         detection_threshold = detection_threshold_inch;
     }
 
-    if (distance <= detection_threshold && !having_obj){
+    Serial.print("Distance: ");
+    Serial.print(distance);
+    Serial.print(" Threshold: ");
+    Serial.println(detection_threshold);
 
-        having_obj = true;
-        obj_count++; 
-    }else if(distance > detection_threshold && having_obj){
+    if (distance > detection_threshold && distance < 60.0) {
+        if (!having_obj) {
+            having_obj = true;
+            obj_count++;
+
+        }
+    } else {
+        if (having_obj) {
+
+        }
         having_obj = false;
-
     }
-    return obj_count;
 
+    return obj_count;
 }
+
